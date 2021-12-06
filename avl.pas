@@ -10,12 +10,20 @@ interface
                         depth: integer;
         end;
     function find(pt: pTree; k:integer): pTree;
+    { find возвращает ссылку на элемент с искомым ключом, 
+      если такого элемента нет, то возвращает nil }
+
     function form(var pt:pTree; k:integer): pTree;
+    { form вставляет элемент с ключом k в дерево, если его там не было,
+      возвращает ссылку на элемент с ключом k }
+
     procedure del(var pt:pTree; k: integer);
+    { del удаляет элемент с ключом k,если он там есть }
 
 implementation
 
 procedure dSons(var l, r:integer; pt:pTree);
+    { возвращает высоту дочерних элементов }
     begin
         l:=0; r:=0;
         if pt<>nil then
@@ -26,6 +34,7 @@ procedure dSons(var l, r:integer; pt:pTree);
     end;
 
 function getBalance(pt:pTree):integer;
+    { возвращает баланс элемента }
     var l, r:integer;
     begin
         dSons(l, r, pt);
@@ -33,6 +42,7 @@ function getBalance(pt:pTree):integer;
     end;
 
 procedure updateDepth(pt:pTree);
+    { обновляет значение depth в корне переданого дерева }
     var l, r:integer;
     begin
         dSons(l, r, pt);
@@ -41,12 +51,14 @@ procedure updateDepth(pt:pTree);
     end;
 
 procedure link(var A, B, C:pTree);
+    { прикрепляет к А соответственно слева и справа B и C }
     begin
         A^.left:= B;
         A^.right:= C
     end;
 
 procedure getSons(var A, B, C: pTree);
+    { передает в B и C левую и правую дочерние ветки A соответственно }
     begin
         B:=A^.left;
         C:=A^.right
@@ -156,6 +168,8 @@ function form(var pt:pTree; k:integer): pTree;
     end;
 
 function mKrest(var R : pTree; S : pTree) : pTree;
+    { непосредственное удаление из памяти элемента R^, 
+      S - элемент ссылающийся на R }
     var X,Y,U,W : pTree;
     begin 
         X:=R^.left;
@@ -179,7 +193,8 @@ function mKrest(var R : pTree; S : pTree) : pTree;
     end;
 
 function mKill(var pt:pTree; k:integer; s:pTree):pTree;
-    { s - предыдущий перед pt }
+    { поиск элемента с ключом k, который подлежит удалению,
+      s - предыдущий перед pt }
     begin
         if pt=nil then mKill:=nil
         else with pt^ do 
